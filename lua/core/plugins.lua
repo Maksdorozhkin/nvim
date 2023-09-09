@@ -52,5 +52,4 @@ require("lazy").setup({
 {'terrortylor/nvim-comment'},
 {'lewis6991/gitsigns.nvim'},
 {'akinsho/toggleterm.nvim'},
-{'folke/which-key.nvim'},
 }) 
