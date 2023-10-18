@@ -26,6 +26,8 @@ require("lazy").setup({
 },
 {'nvim-treesitter/nvim-treesitter'},
 {'neovim/nvim-lspconfig'},
+-- Прозрачный фон
+{'xiyaowong/nvim-transparent'},
 -- Zephyr
 {'nvimdev/zephyr-nvim'},
 -- Papadark
