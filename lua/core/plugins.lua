@@ -35,6 +35,8 @@ require("lazy").setup({
 {'rktjmp/lush.nvim'},
 --Catppuccin
 { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+-- Gruvbox theme
+{'morhetz/gruvbox'},
 -- Kanagawa
 {'humbertocarmona/kanagawa-mod.nvim'},
 

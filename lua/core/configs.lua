@@ -56,8 +56,10 @@ vim.cmd([[highlight clear SignColumn]])
 -- Colorscheme
 
 -- vim.cmd('colorscheme papadark')
-vim.cmd('colorscheme zephyr')
+-- vim.cmd('colorscheme zephyr')
 -- vim.cmd('colorscheme kanagawa')
+vim.cmd('colorscheme gruvbox')
+
 
 -- Spell cheker
 vim.opt.spelllang = 'ru_ru'
