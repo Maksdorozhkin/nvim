@@ -26,4 +26,5 @@ vim.g.netrw_liststyle = 3 -- дерево каталогов в Explorer
 vim.g.netrw_hide = 1 -- убирает скрытые файлы в Explorer 
 vim.opt.termguicolors = true -- 24-bit colors
 vim.opt.splitbelow = true -- horizontal split open below and right
+vim.g.python_pep8_indent_multiline_string = 0 -- отступы pep8
 

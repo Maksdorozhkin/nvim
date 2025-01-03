@@ -28,6 +28,8 @@ require("lazy").setup({
   {'Pocco81/auto-save.nvim'}, -- Автосохранение
   {'rebelot/kanagawa.nvim'}, -- Тема рабочего стола
   {'windwp/nvim-autopairs'}, -- автодобавление парных симвалов
+  {'Vimjas/vim-python-pep8-indent'}, -- отступы python
+  {'lukas-reineke/indent-blankline.nvim'}, -- визуальное отображение отступов
   {'hrsh7th/nvim-cmp'}, -- автокомплит
   {'hrsh7th/cmp-nvim-lsp'},
   {'saadparwaiz1/cmp_luasnip'},
@@ -77,6 +79,18 @@ cmp.setup({
 
 -- Настройка nvim-autopairs
 require('nvim-autopairs').setup{}
+
+-- Настройка Indent-blankline визуальное отображение отступов
+require("ibl").setup {
+    indent = {
+        char = "┊", -- Символ для отображения отступов
+    },
+    scope = {
+        enabled = true, -- Включение подсветки областей (scope)
+        show_start = true,
+        show_end = true,
+    },
+}
 
 -- Color scheme
 vim.cmd([[colorscheme kanagawa-wave]]) -- kanagawa-wave, kanagawa-dragon, kanagawa-lotus
