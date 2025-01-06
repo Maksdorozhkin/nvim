@@ -25,8 +25,8 @@ require("lazy").setup({
   {'Pocco81/auto-save.nvim'}, -- Автосохранение
 -- Темы 
   {'rebelot/kanagawa.nvim'},
-  { 
-	"rose-pine/neovim", 
+  {
+	"rose-pine/neovim",
 	name = "rose-pine",
 	config = function()
 	end
@@ -41,11 +41,34 @@ require("lazy").setup({
   {'jose-elias-alvarez/null-ls.nvim'}, -- Форматирование 
 -- LSP --  
   {
-      'neovim/nvim-lspconfig', 
-      config = function() 
+      'neovim/nvim-lspconfig',
+      config = function()
           local lspconfig = require('lspconfig')
       -- Пример настройки LSP для Python
       lspconfig.pyright.setup{}
+      -- для языка lua
+      lspconfig.lua_ls.setup {
+        settings = {
+            Lua = {
+                runtime = {
+        -- Укажите версию Lua, используемую в вашем проекте
+                    version = 'LuaJIT',
+                },
+                diagnostics = {
+        -- Распознавание глобальных переменных Neovim
+                    globals = { 'vim' },
+                },
+                workspace = {
+        -- Подключение библиотек Neovim
+                    library = vim.api.nvim_get_runtime_file('', true),
+                    checkThirdParty = false,
+                    },
+                telemetry = {
+                    enable = false,
+                },
+            },
+        },
+    }
     end,
   },
 })
