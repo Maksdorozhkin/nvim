@@ -14,28 +14,32 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
-
 vim.opt.rtp:prepend(lazypath)
 
 -- Настройка Lazy.nvim
-
 require("lazy").setup({
 
 -- Пример плагинов
-
   { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- :TSU команда для запуска 
   { "nvim-lua/plenary.nvim" }, -- Библиотека для создания плагинов 
   {'Pocco81/auto-save.nvim'}, -- Автосохранение
-  {'rebelot/kanagawa.nvim'}, -- Тема рабочего стола
+-- Темы 
+  {'rebelot/kanagawa.nvim'},
+  { 
+	"rose-pine/neovim", 
+	name = "rose-pine",
+	config = function()
+	end
+},
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   {'windwp/nvim-autopairs'}, -- автодобавление парных симвалов
-  {'Vimjas/vim-python-pep8-indent'}, -- отступы python
   {'lukas-reineke/indent-blankline.nvim'}, -- визуальное отображение отступов
   {'hrsh7th/nvim-cmp'}, -- автокомплит
   {'hrsh7th/cmp-nvim-lsp'},
   {'saadparwaiz1/cmp_luasnip'},
   {'L3MON4D3/LuaSnip'}, -- Сниппеты
   {'jose-elias-alvarez/null-ls.nvim'}, -- Форматирование 
--- LSP ------------------------------------------------------------------------------------  
+-- LSP --  
   {
       'neovim/nvim-lspconfig', 
       config = function() 
@@ -53,6 +57,7 @@ require('null-ls').setup({
     }
 
 })
+
 -- Autocomplete settings
 local cmp = require('cmp')
 local luasnip = require('luasnip')
@@ -62,9 +67,7 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
-  completion = {
---    autocomplete = false, -- Отключить автоматическое появление
-  },
+  completion = {},
   mapping = {
     ['<C-e>'] = cmp.mapping.abort(), -- Закрыть меню
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Подтвердить выбор
@@ -88,13 +91,14 @@ require("ibl").setup {
     scope = {
         enabled = true, -- Включение подсветки областей (scope)
         show_start = true,
-        show_end = true,
+        show_end = false,
     },
 }
 
 -- Color scheme
-vim.cmd([[colorscheme kanagawa-wave]]) -- kanagawa-wave, kanagawa-dragon, kanagawa-lotus
---require("tokyonight").load() -- тема установлена вручную
+--vim.cmd([[colorscheme kanagawa-wave]]) -- kanagawa-wave, kanagawa-dragon, kanagawa-lotus
+-- require("tokyonight").load() -- тема установлена вручную
+vim.cmd("colorscheme rose-pine-main")
 
 -- прозрачный фон
 vim.cmd([[
@@ -104,4 +108,5 @@ vim.cmd([[
   highlight EndOfBuffer guibg=NONE ctermbg=NONE
 ]])
 
-
+-- Запуск Python файлов
+vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:!python %<CR>', { noremap = true, silent = true })

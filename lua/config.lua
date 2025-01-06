@@ -14,7 +14,6 @@ vim.opt.fileformat = "unix"
 vim.opt.smartindent = true
 vim.opt.splitbelow = true -- horizontal split open below and right
 vim.opt.splitright = true
-vim.g.mapleader = ',' -- Leader key
 vim.opt.termguicolors = true -- 24-bit colors
 -- Установить язык сообщений на русский
 vim.cmd('language messages ru_RU.UTF-8')
@@ -26,5 +25,5 @@ vim.g.netrw_liststyle = 3 -- дерево каталогов в Explorer
 vim.g.netrw_hide = 1 -- убирает скрытые файлы в Explorer 
 vim.opt.termguicolors = true -- 24-bit colors
 vim.opt.splitbelow = true -- horizontal split open below and right
-vim.g.python_pep8_indent_multiline_string = 0 -- отступы pep8
-
+-- vim.opt.guicursor = "" -- делает курсор стандартным
+vim.opt.colorcolumn = "80" -- вертикальная линия pep8
