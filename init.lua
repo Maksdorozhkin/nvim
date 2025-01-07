@@ -49,6 +49,7 @@ require("lazy").setup({
   {'saadparwaiz1/cmp_luasnip'},
   {'L3MON4D3/LuaSnip'}, -- Сниппеты
   {'jose-elias-alvarez/null-ls.nvim'}, -- Форматирование 
+  { 'numToStr/Comment.nvim', config = true }, -- Коментирование строк gcc, gc visual mode
 -- LSP --  
   {
       'neovim/nvim-lspconfig',
