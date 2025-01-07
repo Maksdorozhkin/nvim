@@ -23,14 +23,24 @@ require("lazy").setup({
   { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }, -- :TSU команда для запуска 
   { "nvim-lua/plenary.nvim" }, -- Библиотека для создания плагинов 
   {'Pocco81/auto-save.nvim'}, -- Автосохранение
--- Темы 
+-- Темы ---------------------------------- 
   {'rebelot/kanagawa.nvim'},
   {
-	"rose-pine/neovim",
+    "rose-pine/neovim",
 	name = "rose-pine",
 	config = function()
-	end
-},
+	end },
+  {"catppuccin/nvim", name = "catppuccin", priority = 1000},
+  {
+      'sainnhe/everforest',
+      lazy = false,
+      priority = 1000,
+      config = function()
+        vim.g.everforest_enable_italic = true
+      end
+  },
+
+
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
   {'windwp/nvim-autopairs'}, -- автодобавление парных симвалов
   {'lukas-reineke/indent-blankline.nvim'}, -- визуальное отображение отступов
@@ -120,16 +130,20 @@ require("ibl").setup {
 
 -- Color scheme
 --vim.cmd([[colorscheme kanagawa-wave]]) -- kanagawa-wave, kanagawa-dragon, kanagawa-lotus
--- require("tokyonight").load() -- тема установлена вручную
-vim.cmd("colorscheme rose-pine-main")
+--require("tokyonight").load() -- тема установлена вручную
+--vim.cmd("colorscheme rose-pine-main")
+--vim.cmd.colorscheme "catppuccin-mocha" -- catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+vim.cmd.colorscheme('everforest')
+vim.g.everforest_background = 'soft'
+-----------------------------
 
 -- прозрачный фон
-vim.cmd([[
-  highlight Normal guibg=NONE ctermbg=NONE
-  highlight NonText guibg=NONE ctermbg=NONE
-  highlight LineNr guibg=NONE ctermbg=NONE
-  highlight EndOfBuffer guibg=NONE ctermbg=NONE
-]])
+--vim.cmd([[
+  --highlight Normal guibg=NONE ctermbg=NONE
+  --highlight NonText guibg=NONE ctermbg=NONE
+  --highlight LineNr guibg=NONE ctermbg=NONE
+  --highlight EndOfBuffer guibg=NONE ctermbg=NONE
+--]])
 
 -- Запуск Python файлов
 vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:!python %<CR>', { noremap = true, silent = true })
