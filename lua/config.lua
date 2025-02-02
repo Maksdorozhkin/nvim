@@ -27,3 +27,10 @@ vim.opt.termguicolors = true -- 24-bit colors
 vim.opt.splitbelow = true -- horizontal split open below and right
 -- vim.opt.guicursor = "" -- делает курсор стандартным
 vim.opt.colorcolumn = "80" -- вертикальная линия pep8
+vim.g.mapleader = " "
+-- Запуск Python файлов
+vim.api.nvim_set_keymap('n', '<leader>r', ':w<CR>:!python %<CR>', { noremap = true, silent = true })
+-- Горячие клавиши для переключения прозрачности
+vim.api.nvim_set_keymap("n", "<leader>tt", ":TransparentToggle<CR>", { noremap = true, silent = true })
+vim.opt.showmode = false -- Отключает отображение режима в командной строке
+vim.opt.laststatus = 3
