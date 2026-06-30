@@ -1,3 +1,6 @@
+
+##Мой конфиг nvim
+
 # 🍿 Snacks.nvim — Горячие клавиши
 
 > Конфиг: `init.lua` | Leader: `<Space>` (пробел)
