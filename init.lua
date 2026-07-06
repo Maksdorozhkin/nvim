@@ -30,16 +30,32 @@ vim.opt.spelllang = { 'en_us', 'ru' } -- Использовать английс
 require("lazy").setup({
   -- Поддержка Lua для самого конфига
   { "folke/neodev.nvim" },
+
   -- Плагин автоматической прозрачности
   { "xiyaowong/transparent.nvim", lazy = false },
+
+  -- Nvim-Treesitter
+  {
+  "nvim-treesitter/nvim-treesitter",
+  build = ":TSUpdate",
+  config = function()
+    require("nvim-treesitter").setup({
+      highlight = { enable = true },
+    })
+    
+	-- 2. Установка парсеров
+    require("nvim-treesitter").install({ "html", "css", "javascript", "typescript", "lua", "python", "go" })
+  end,},
+  
   -- Snacks
   {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
-  ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
+	color = { enabled = true },
+	terminal = { enabled = true },
     dashboard = { enabled = true },
     explorer = { enabled = true },
     indent = { enabled = true },
@@ -68,6 +84,8 @@ require("lazy").setup({
     { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
     { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
     { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+	-- Быстрое открытие терминала
+    { "<leader>t", function() Snacks.terminal.toggle() end, desc = "Toggle Terminal" },
     -- find
     { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
     { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
@@ -194,8 +212,65 @@ require("lazy").setup({
         Snacks.toggle.dim():map("<leader>uD")
       end,
     })
-  end,
-},
+  end,},
+
+  -- CMP
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",     
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip", 
+    },
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        }),
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+        }),
+      })
+    end,
+  },
+
+  -- Mason
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
+  },
+
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { 
+      "neovim/nvim-lspconfig",
+    },
+    config = function()
+      local status, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      if status then
+        vim.lsp.config("*", {
+          capabilities = cmp_nvim_lsp.default_capabilities(),
+        })
+      end
+
+      require("mason-lspconfig").setup({
+        ensure_installed = { "html", "cssls", "lua_ls", "ts_ls", "pyright", "gopls" },
+        automatic_enable = true, 
+      })
+    end,
+  },
+
+
   -- Тема Oxocarbon 
   { "nyoom-engineering/oxocarbon.nvim" },
 
@@ -240,3 +315,4 @@ vim.g.clipboard = {
 
 -- отправляет любой текст скопированный по у в буфер обмена
 vim.opt.clipboard = "unnamedplus"
+
