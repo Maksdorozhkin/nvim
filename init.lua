@@ -5,7 +5,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     "git",
     "clone",
     "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git", -- ИСПРАВЛЕНО: Полный путь к репозиторию
+    "https://github.com/folke/lazy.nvim.git",
     "--branch=stable",
     lazypath,
   })
@@ -33,6 +33,49 @@ require("lazy").setup({
 
   -- Плагин автоматической прозрачности
   { "xiyaowong/transparent.nvim", lazy = false },
+
+  -- Автозакрытие скобок и кавычек
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter", -- Загружается только при переходе в режим ввода
+    config = function()
+      local autopairs = require("nvim-autopairs")
+      autopairs.setup({
+        check_ts = true, -- Интеграция с Treesitter (не ставит скобки внутри комментариев или строк)
+        ts_config = {
+          lua = { "string" }, -- Не добавлять пары в строках Lua
+          javascript = { "template_string" },
+        },
+      })
+
+      local cmp_status, cmp = pcall(require, "cmp")
+      if cmp_status then
+        local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      end
+    end,
+  },
+  
+  -- Быстрое добавление/удаление/изменение кавычек и скобок
+  {
+    "echasnovski/mini.surround",
+    version = false, -- Используем актуальную версию
+    config = function()
+      require("mini.surround").setup({
+        -- Список горячих клавиш:
+        mappings = {
+          add = "sa",     -- Add: добавить скобки/кавычки вокруг выделения или движения
+          delete = "sd",  -- Delete: удалить скобки/кавычки вокруг курсора
+          find = "sf",    -- Find: найти следующую пару
+          find_left = "sF",
+          highlight = "sh", -- Highlight: подсветить пару скобок
+          replace = "sr", -- Replace: заменить одни скобки/кавычки на другие
+          update_n_lines = "sn",
+        },
+      })
+    end,
+  },
+
 
   -- Nvim-Treesitter
   {
