@@ -68,6 +68,27 @@ require("lazy").setup({
 	{ "xiyaowong/transparent.nvim", lazy = false },
 
 
+	-- Подсветка и поиск TODO заметок в коде
+	{
+		"folke/todo-comments.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("todo-comments").setup({
+				-- Ваши иконки отобразятся корректно благодаря Hack NF
+				signs = true,
+			})
+		end,
+		keys = {
+			-- Быстрый прыжок к следующей заметке в файле
+			{ "]t", function() require("todo-comments").jump_next() end, desc = "Next Todo" },
+			-- Быстрый прыжок к предыдущей заметке
+			{ "[t", function() require("todo-comments").jump_prev() end, desc = "Previous Todo" },
+		},
+	},
+
+
+
 	-- Подсветка и переименование парных тегов
 	{
 		"windwp/nvim-ts-autotag",
@@ -248,6 +269,10 @@ require("lazy").setup({
 			{ "<leader>sR",      function() Snacks.picker.resume() end,                                  desc = "Resume" },
 			{ "<leader>su",      function() Snacks.picker.undo() end,                                    desc = "Undo History" },
 			{ "<leader>uC",      function() Snacks.picker.colorschemes() end,                            desc = "Colorschemes" },
+			-- Поиск всех TODO заметок по всему проекту (через встроенный поисковик snacks)
+			{ "<leader>st",      function() require("snacks").picker.todo_comments() end,                desc = "Todo Comments" },
+
+
 			-- LSP
 			{ "gd",              function() Snacks.picker.lsp_definitions() end,                         desc = "Goto Definition" },
 			{ "gD",              function() Snacks.picker.lsp_declarations() end,                        desc = "Goto Declaration" },
