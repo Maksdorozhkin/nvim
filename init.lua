@@ -76,6 +76,28 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Gitsigns (включает показ автора строки)
+	{
+		"lewis6991/gitsigns.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("gitsigns").setup({
+				-- Включает показ автора строки при наведении (Git Blame)
+				current_line_blame = true,
+				current_line_blame_opts = {
+					delay = 500, -- Показать через полсекунды задержки курсора
+				},
+			})
+		end,
+		keys = {
+			-- Прыгнуть к следующему изменению в файле
+			{ "]c", "<cmd>Gitsigns next_hunk<CR>", desc = "Next Git Change" },
+			-- Прыгнуть к предыдущему изменению
+			{ "[c", "<cmd>Gitsigns prev_hunk<CR>", desc = "Prev Git Change" },
+		},
+	},
+
+
 	-- Nvim-Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -330,7 +352,7 @@ require("lazy").setup({
 				go = { "gofmt", "goimports" },
 			},
 			format_on_save = {
-				timeout_ms = 500,
+				timeout_ms = 3000,
 				lsp_format = "fallback",
 			},
 		},
