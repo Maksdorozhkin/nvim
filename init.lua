@@ -45,6 +45,44 @@ require("lazy").setup({
 		end,
 	},
 
+
+	-- Современное и красивое файловое дерево Neo-tree
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- Ваши иконки
+			"MunifTanjim/nui.nvim",
+		},
+		config = function()
+			require("neo-tree").setup({
+				close_if_last_window = true, -- Закрывать дерево, если оно осталось единственным окном
+				filesystem = {
+					filtered_items = {
+						visible = true, -- Показывать скрытые файлы (например, .gitignore) полупрозрачными
+						hide_dotfiles = false,
+						hide_gitignored = false,
+					},
+					follow_current_file = {
+						enabled = true, -- Автоматически раскрывать папки до файла, который сейчас открыт
+					},
+				},
+				window = {
+					width = 45, -- Ширина боковой панели
+					mappings = {
+						["<space>"] = "none", -- Освобождаем пробел, чтобы не ломать ваши лидер-клавиши
+					},
+				},
+			})
+		end,
+		keys = {
+			-- Назначаем открытие Neo-tree на ту же привычную комбинацию <Пробел> + e
+			{ "<leader>e", "<cmd>Neotree toggle left<cr>", desc = "Neo-tree (File Explorer)" },
+		},
+	},
+
+
 	-- Современный дизайн окон ввода
 	{
 		"stevearc/dressing.nvim",
@@ -193,7 +231,7 @@ require("lazy").setup({
 			color = { enabled = true },
 			terminal = { enabled = true },
 			dashboard = { enabled = true },
-			explorer = { enabled = true },
+			explorer = { enabled = false },
 			indent = { enabled = true },
 			input = { enabled = true },
 			notifier = {
