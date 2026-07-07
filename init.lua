@@ -31,8 +31,58 @@ require("lazy").setup({
 	-- Поддержка Lua для самого конфига
 	{ "folke/neodev.nvim" },
 
+	-- База иконок для всех плагинов интерфейса
+	{
+		"nvim-tree/nvim-web-devicons",
+		lazy = false, -- Загружаем сразу, чтобы иконки появились на заставке и в дереве
+		config = function()
+			require("nvim-web-devicons").setup({
+				-- Включаем цветные иконки (они отлично подстроятся под Oxocarbon)
+				color_icons = true,
+				-- Настройка по умолчанию (если формат файла неизвестен)
+				default = true,
+			})
+		end,
+	},
+
+	-- Современный дизайн окон ввода
+	{
+		"stevearc/dressing.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("dressing").setup({
+				input = {
+					enabled = true,
+					default_prompt = "Input:",
+					title_pos = "left",
+					insert_only = true,
+					start_in_insert = true,
+					border = "rounded", -- Красивые скругленные края окон
+					relative = "cursor",
+				},
+			})
+		end,
+	},
+
 	-- Плагин автоматической прозрачности
 	{ "xiyaowong/transparent.nvim", lazy = false },
+
+
+	-- Подсветка и переименование парных тегов
+	{
+		"windwp/nvim-ts-autotag",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("nvim-ts-autotag").setup({
+				opts = {
+					enable_close = true, -- Автозакрытие тегов при вводе `>`
+					enable_rename = true, -- Синхронное переименование тегов
+					enable_close_on_slash = true, -- Автозакрытие при вводе `/`
+				},
+			})
+		end,
+	},
+
 
 	-- Автозакрытие скобок и кавычек
 	{
