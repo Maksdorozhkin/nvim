@@ -17,8 +17,16 @@ vim.opt.number = true         -- Номера строк
 vim.opt.relativenumber = true -- Относительные номера
 vim.opt.tabstop = 4           -- Размер табуляции
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = false     -- В Go используем табы, а не пробелы
-vim.opt.termguicolors = true  -- Поддержка 24-bit цветов
+vim.opt.expandtab = true      -- По умолчанию пробелы (Python, и т.д.)
+
+-- Табы для Go, Lua, JS/TS (вместо глобального expandtab = false)
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "go", "lua", "javascript", "typescript" },
+	callback = function()
+		vim.opt_local.expandtab = false
+	end,
+})
+vim.opt.termguicolors = true -- Поддержка 24-bit цветов
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -101,10 +109,6 @@ require("lazy").setup({
 			})
 		end,
 	},
-
-	-- Плагин автоматической прозрачности
-	{ "xiyaowong/transparent.nvim", lazy = false },
-
 
 	-- Подсветка и поиск TODO заметок в коде
 	{
@@ -213,11 +217,9 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter").setup({
+				ensure_installed = { "html", "css", "javascript", "typescript", "lua", "python", "go" },
 				highlight = { enable = true },
 			})
-
-			-- 2. Установка парсеров
-			require("nvim-treesitter").install({ "html", "css", "javascript", "typescript", "lua", "python", "go" })
 		end,
 	},
 
@@ -257,7 +259,6 @@ require("lazy").setup({
 			{ "<leader>/",       function() Snacks.picker.grep() end,                                    desc = "Grep" },
 			{ "<leader>:",       function() Snacks.picker.command_history() end,                         desc = "Command History" },
 			{ "<leader>n",       function() Snacks.picker.notifications() end,                           desc = "Notification History" },
-			{ "<leader>e",       function() Snacks.explorer() end,                                       desc = "File Explorer" },
 			-- Быстрое открытие терминала
 			{ "<leader>t",       function() Snacks.terminal.toggle() end,                                desc = "Toggle Terminal" },
 			-- find
@@ -281,7 +282,6 @@ require("lazy").setup({
 			{ "<leader>gp",      function() Snacks.picker.gh_pr() end,                                   desc = "GitHub Pull Requests (open)" },
 			{ "<leader>gP",      function() Snacks.picker.gh_pr({ state = "all" }) end,                  desc = "GitHub Pull Requests (all)" },
 			-- Grep
-			{ "<leader>sb",      function() Snacks.picker.lines() end,                                   desc = "Buffer Lines" },
 			{ "<leader>sB",      function() Snacks.picker.grep_buffers() end,                            desc = "Grep Open Buffers" },
 			{ "<leader>sg",      function() Snacks.picker.grep() end,                                    desc = "Grep" },
 			{ "<leader>sw",      function() Snacks.picker.grep_word() end,                               desc = "Visual selection or word",   mode = { "n", "x" } },
@@ -326,7 +326,7 @@ require("lazy").setup({
 			{ "<leader>Z",       function() Snacks.zen.zoom() end,                                       desc = "Toggle Zoom" },
 			{ "<leader>.",       function() Snacks.scratch() end,                                        desc = "Toggle Scratch Buffer" },
 			{ "<leader>S",       function() Snacks.scratch.select() end,                                 desc = "Select Scratch Buffer" },
-			{ "<leader>n",       function() Snacks.notifier.show_history() end,                          desc = "Notification History" },
+			-- { "<leader>n",       function() Snacks.notifier.show_history() end,                          desc = "Notification History" },
 			{ "<leader>bd",      function() Snacks.bufdelete() end,                                      desc = "Delete Buffer" },
 			{ "<leader>cR",      function() Snacks.rename.rename_file() end,                             desc = "Rename File" },
 			{ "<leader>gB",      function() Snacks.gitbrowse() end,                                      desc = "Git Browse",                 mode = { "n", "v" } },
@@ -504,14 +504,11 @@ require("lazy").setup({
 	-- Тема Oxocarbon
 	{ "nyoom-engineering/oxocarbon.nvim" },
 
-	-- Цветовая схема Kanagawa
-	{
-		"rebelot/kanagawa.nvim",
-		opts = {
-			transparent = true,
-		}
-	},
 })
+
+-- Тема
+vim.cmd("colorscheme oxocarbon")
+-- vim.cmd("colorscheme kanagawa")
 
 -- 4. Автокоманда для принудительной прозрачности окон
 -- (Срабатывает при инициализации любой темы, гарантируя отсутствие серого фона)
@@ -526,10 +523,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	end,
 })
 
--- 5. Активация темы
-vim.cmd.colorscheme "oxocarbon"
-
--- Буфер обмена
 vim.g.clipboard = {
 	name = 'WslClipboard',
 	copy = {
