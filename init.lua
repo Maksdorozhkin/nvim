@@ -13,12 +13,15 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- 2. Основные настройки интерфейса
+-- Использовать Fish в качестве системной оболочки для Neovim
+vim.opt.shell = "/usr/bin/fish"
 vim.opt.number = true         -- Номера строк
 vim.opt.relativenumber = true -- Относительные номера
 vim.opt.tabstop = 4           -- Размер табуляции
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true      -- По умолчанию пробелы (Python, и т.д.)
-
+vim.opt.conceallevel = 2      -- Скрывает символы форматирования, заменяя их на иконки для md файлов
+vim.opt.clipboard = "unnamedplus"
 -- Табы для Go, Lua, JS/TS (вместо глобального expandtab = false)
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "go", "lua", "javascript", "typescript" },
@@ -217,7 +220,7 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter").setup({
-				ensure_installed = { "html", "css", "javascript", "typescript", "lua", "python", "go" },
+				ensure_installed = { "html", "css", "javascript", "typescript", "lua", "python", "go", "markdown", "markdown_inline" },
 				highlight = { enable = true },
 			})
 		end,
@@ -249,8 +252,8 @@ require("lazy").setup({
 			styles = {
 				notification = {
 					-- wo = { wrap = true } -- Wrap notifications
-				}
-			}
+				},
+			},
 		},
 		keys = {
 			-- Top Pickers & Explorer
@@ -400,7 +403,7 @@ require("lazy").setup({
 		"hrsh7th/nvim-cmp",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
-			"L3MON4D3/LuaSnip",
+			{ "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
 			"saadparwaiz1/cmp_luasnip",
 		},
 		config = function()
@@ -450,6 +453,27 @@ require("lazy").setup({
 			})
 		end,
 	},
+	{
+		'MeanderingProgrammer/render-markdown.nvim',
+		dependencies = {
+			'nvim-treesitter/nvim-treesitter', -- Обязательно для работы парсеров
+			'nvim-tree/nvim-web-devicons' -- Нужен для красивых иконок
+		},
+		ft = { 'markdown', 'codecompanion' }, -- Загружается только для MD файлов
+		opts = {
+			-- Базовые настройки (можно оставить пустыми для дефолтных)
+			heading = {
+				-- Меняет значки заголовков #, ##, ### на более аккуратные
+				icons = { '🢂 ', '🢂 ', '🢂 ', '🢂 ', '🢂 ', '🢂 ' },
+			},
+			checkbox = {
+				-- Красивые галочки для списков задач
+				unchecked = { icon = '   ' },
+				checked = { icon = ' ' },
+			},
+		},
+	},
+
 
 	-- Форматирование кода при сохранении
 	{
@@ -503,7 +527,6 @@ require("lazy").setup({
 
 	-- Тема Oxocarbon
 	{ "nyoom-engineering/oxocarbon.nvim" },
-
 })
 
 -- Тема
@@ -535,6 +558,4 @@ vim.g.clipboard = {
 	},
 	cache_enabled = 0,
 }
-
--- отправляет любой текст скопированный по у в буфер обмена
-vim.opt.clipboard = "unnamedplus"
+vim.filetype.add({ extension = { gotmpl = "gotmpl" } })
