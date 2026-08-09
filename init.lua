@@ -22,6 +22,8 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true      -- По умолчанию пробелы (Python, и т.д.)
 vim.opt.conceallevel = 2      -- Скрывает символы форматирования, заменяя их на иконки для md файлов
 vim.opt.clipboard = "unnamedplus"
+vim.opt.showmode = false      -- убирает mode
+
 -- Табы для Go, Lua, JS/TS (вместо глобального expandtab = false)
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "go", "lua", "javascript", "typescript" },
@@ -499,7 +501,7 @@ require("lazy").setup({
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			require("lualine").setup({ options = { theme = "oxocarbon" } })
+			require("lualine").setup({ options = { theme = "onedark" } })
 		end,
 	},
 
@@ -525,14 +527,26 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Тема Oxocarbon
+	-- Темы
 	{ "nyoom-engineering/oxocarbon.nvim" },
+	{ "rebelot/kanagawa.nvim" },
+	{
+		"navarasu/onedark.nvim",
+		priority = 1000, -- make sure to load this before all the other start plugins
+		config = function()
+			require('onedark').setup {
+				style = 'dark',
+			}
+			require('onedark').load()
+		end
+	}
 })
 
--- Тема
-vim.cmd("colorscheme oxocarbon")
+-- -- Тема
+-- vim.cmd("colorscheme oxocarbon")
 -- vim.cmd("colorscheme kanagawa")
-
+vim.cmd("colorscheme onedark")
+--
 -- 4. Автокоманда для принудительной прозрачности окон
 -- (Срабатывает при инициализации любой темы, гарантируя отсутствие серого фона)
 vim.api.nvim_create_autocmd("ColorScheme", {
